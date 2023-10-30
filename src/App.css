@@ -36,3 +36,23 @@
     transform: rotate(360deg);
   }
 }
+form {
+  margin: 0.5rem;
+  display: flex;
+  flex-direction: column;
+}
+
+input,
+select {
+  width: 100%;
+  margin-bottom: 1rem;
+}
+
+input[type="checkbox"] {
+  width: auto;
+}
+
+img {
+  width: 50%;
+  margin-bottom: 1rem;
+}
