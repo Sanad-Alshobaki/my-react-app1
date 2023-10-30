@@ -3,24 +3,18 @@ import "./App.css";
 
 
 function App() {
-  const [userName, setUsername] = useState("")
-  const [password, setPassword] = useState("")
-  const [avatar, setAvatar] = useState("");
-  const [accountType, setAccountType] = useState("normal");
-  const [newsletter, setNewsletter] = useState(false);
-
+  const [formData, setFormData] = useState({
+    userName: '',
+    password: '',
+    avatar: '',
+    accountType: 'free',
+    newsletter: false
+  })
 
   function handleSubmit(event) {
     event.preventDefault()
   }
 
-  const formData = {
-    userName,
-    password,
-    avatar,
-    accountType,
-    newsletter
-  }
   console.log(formData);
 
   return (
@@ -30,33 +24,35 @@ function App() {
       <input
         type="text"
         id="username"
-        value={userName}
-        onChange={e => setUsername(e.target.value)}
+        value={formData.userName}
+        onChange={e => setFormData({ ...formData, userName: e.target.value })}
       />
 
       <label htmlFor="password">Password</label>
       <input
         type="password"
         id="password"
-        value={password}
-        onChange={e => setPassword(e.target.value)}
+        value={formData.password}
+        onChange={e => setFormData({ ...formData, password: e.target.value })}
       />
 
       <label htmlFor="avatar">Avatar Image</label>
       <input
         type="text"
         id="avatar"
-        value={avatar}
-        onChange={e => setAvatar(e.target.value)}
+        value={formData.avatar}
+        onChange={e => setFormData({ ...formData, avatar: e.target.value })}
+
       />
-      <img src={avatar} alt="Avatar preview" />
+      <img src={formData.avatar} alt="Avatar preview" />
       {/* https://www.kindpng.com/picc/m/78-785827_user-profile-avatar-login-account-male-user-icon.png */}
 
       <label htmlFor="type">Account Type</label>
       <select
         id="type"
-        value={accountType}
-        onChange={e => setAccountType(e.target.value)}
+        value={formData.accountType}
+        onChange={e => setFormData({ ...formData, accountType: e.target.value })}
+
       >
         <option value="free">Free</option>
         <option value="normal">Normal</option>
@@ -68,8 +64,9 @@ function App() {
         <input
           type="checkbox"
           id="newsletter"
-          checked={newsletter}
-          onChange={e => setNewsletter(e.target.checked)}
+          checked={formData.newsletter}
+          onChange={e => setFormData({ ...formData, newsletter: e.target.checked })}
+
         />
       </label>
 
