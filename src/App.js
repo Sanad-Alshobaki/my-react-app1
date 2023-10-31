@@ -4,8 +4,9 @@ import "./App.css";
 
 function App() {
   const [formData, setFormData] = useState({
-    userName: '',
+    username: '',
     password: '',
+    email: '',
     avatar: '',
     accountType: 'free',
     newsletter: false
@@ -15,7 +16,17 @@ function App() {
     event.preventDefault()
   }
 
-  console.log(formData);
+  function handleChange(event) {
+    const key = event.target.id
+    const value = event.target.type === "checkbox" ? event.target.checked : event.target.value
+    setFormData
+      ({
+        ...formData,
+        [key]: value
+      })
+  }
+
+  //  console.log(formData);
 
   return (
     <form onSubmit={handleSubmit}>
@@ -24,8 +35,8 @@ function App() {
       <input
         type="text"
         id="username"
-        value={formData.userName}
-        onChange={e => setFormData({ ...formData, userName: e.target.value })}
+        value={formData.username}
+        onChange={handleChange}
       />
 
       <label htmlFor="password">Password</label>
@@ -33,7 +44,15 @@ function App() {
         type="password"
         id="password"
         value={formData.password}
-        onChange={e => setFormData({ ...formData, password: e.target.value })}
+        onChange={handleChange}
+      />
+
+      <label htmlFor="email">E-Mail</label>
+      <input
+        type="email"
+        id="email"
+        value={formData.email}
+        onChange={handleChange}
       />
 
       <label htmlFor="avatar">Avatar Image</label>
@@ -41,7 +60,7 @@ function App() {
         type="text"
         id="avatar"
         value={formData.avatar}
-        onChange={e => setFormData({ ...formData, avatar: e.target.value })}
+        onChange={handleChange}
 
       />
       <img src={formData.avatar} alt="Avatar preview" />
@@ -49,9 +68,9 @@ function App() {
 
       <label htmlFor="type">Account Type</label>
       <select
-        id="type"
+        id="accountType"
         value={formData.accountType}
-        onChange={e => setFormData({ ...formData, accountType: e.target.value })}
+        onChange={handleChange}
 
       >
         <option value="free">Free</option>
@@ -65,7 +84,7 @@ function App() {
           type="checkbox"
           id="newsletter"
           checked={formData.newsletter}
-          onChange={e => setFormData({ ...formData, newsletter: e.target.checked })}
+          onChange={handleChange}
 
         />
       </label>
