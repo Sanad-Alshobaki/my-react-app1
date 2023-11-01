@@ -1,97 +1,102 @@
 import React, { useState } from "react";
+import { myTodos, getNextId } from "./todos.js";
 import "./App.css";
 
+/*
+Rules of state: never mutate state directly!
+
+Todo Deliverables:
+- Add element to array: use spread operator!
+- Remove element to array: use filter!
+- Update element in array: use map!
+*/
 
 function App() {
-  const [formData, setFormData] = useState({
-    username: '',
-    password: '',
-    email: '',
-    avatar: '',
-    accountType: 'free',
-    newsletter: false
-  })
+  const [todos, setTodos] = useState(myTodos);
+  const [newTodoDescription, setNewTodoDescription] = useState("");
 
-  function handleSubmit(event) {
-    event.preventDefault()
+  console.log(todos);
+
+  function addTodo(e) {
+    e.preventDefault();
+    const newTodo = {
+      id: getNextId(),
+      description: newTodoDescription,
+      completed: false,
+    };
+    const updatedTodos = [...todos, newTodo];
+    setTodos(updatedTodos);
   }
 
-  function handleChange(event) {
-    const key = event.target.id
-    const value = event.target.type === "checkbox" ? event.target.checked : event.target.value
-    setFormData
-      ({
-        ...formData,
-        [key]: value
-      })
+  function deleteTode(id) {
+    const updatedTodos = todos.filter((todo) => todo.id !== id);
+    setTodos(updatedTodos);
   }
 
-  //  console.log(formData);
+  function updateTodo(id, completed) {
+    /*
+      - iterate over the elements in our todo array
+      - check if the ID matches
+      - if it does, return an updated todo obj
+      - otherwise, return the original todo
+    */
+    const updatedTodos = todos.map((todo) => {
+      if (todo.id === id) {
+        return {
+          ...todo,
+          completed: completed,
+          // or just write completed becouse the key and parameter are the same
+        };
+      } else {
+        return todo;
+      }
+    });
+    setTodos(updatedTodos);
+  }
 
   return (
-    <form onSubmit={handleSubmit}>
-      <h1>Create an Account</h1>
-      <label htmlFor="username">Username</label>
-      <input
-        type="text"
-        id="username"
-        value={formData.username}
-        onChange={handleChange}
-      />
-
-      <label htmlFor="password">Password</label>
-      <input
-        type="password"
-        id="password"
-        value={formData.password}
-        onChange={handleChange}
-      />
-
-      <label htmlFor="email">E-Mail</label>
-      <input
-        type="email"
-        id="email"
-        value={formData.email}
-        onChange={handleChange}
-      />
-
-      <label htmlFor="avatar">Avatar Image</label>
-      <input
-        type="text"
-        id="avatar"
-        value={formData.avatar}
-        onChange={handleChange}
-
-      />
-      <img src={formData.avatar} alt="Avatar preview" />
-      {/* https://www.kindpng.com/picc/m/78-785827_user-profile-avatar-login-account-male-user-icon.png */}
-
-      <label htmlFor="type">Account Type</label>
-      <select
-        id="accountType"
-        value={formData.accountType}
-        onChange={handleChange}
-
-      >
-        <option value="free">Free</option>
-        <option value="normal">Normal</option>
-        <option value="pro">Pro</option>
-      </select>
-
-      <label>
-        Get Our Newsletter!
-        <input
-          type="checkbox"
-          id="newsletter"
-          checked={formData.newsletter}
-          onChange={handleChange}
-
-        />
-      </label>
-
-      <input type="submit" value="Sign Up" />
-    </form>
-  )
+    <div className="App">
+      <h2>Add Todos</h2>
+      <form onSubmit={addTodo}>
+        <label htmlFor="">
+          Descreption
+          <input
+            type="text"
+            value={newTodoDescription}
+            onChange={(e) => {
+              setNewTodoDescription(e.target.value);
+            }}
+          />
+        </label>
+        <input type="submit" value="Add todo" />
+      </form>
+      <h2>My Todos</h2>
+      <ul>
+        {todos.map((todo) => (
+          <li key={todo.id}>
+            <strong>{todo.description}</strong>
+            <label htmlFor="">
+              Completed?
+              <input
+                type="checkbox"
+                onChange={(e) => {
+                  updateTodo(todo.id, e.target.checked);
+                }}
+                checked={todo.completed}
+              />
+            </label>
+            <button
+              onClick={() => {
+                deleteTode(todo.id);
+              }}
+            >
+              Delete
+            </button>
+          </li>
+        ))}
+      </ul>
+    </div>
+  );
 }
 
 export default App;
